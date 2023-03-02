@@ -11,10 +11,7 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-local status_ok, packer = pcall(require, "packer")
-if not status_ok then
-	return
-end
+local packer = require("packer")
 
 packer.init {
 	display = {
@@ -29,7 +26,7 @@ vim.cmd([[
 	augroup end
 	augroup fold_plugins_lua
 		autocmd!
-		autocmd BufWinEnter plugins.lua 1,36fold
+		autocmd BufWinEnter plugins.lua 1,31fold
 	augroup end
 ]])
 
@@ -41,20 +38,31 @@ return packer.startup(function(use)
    use "ellisonleao/gruvbox.nvim"
    use "jeffkreeftmeijer/vim-numbertoggle"
    use {
-     "luukvbaal/nnn.nvim",
-     config = require("nnn").setup()
-   }
-   use "neovim/nvim-lspconfig"
-   use "hrsh7th/cmp-nvim-lsp"
-   use "hrsh7th/cmp-nvim-lua"
-   use "hrsh7th/cmp-buffer"
-   use "hrsh7th/cmp-path"
-   use "hrsh7th/cmp-cmdline"
-   use "hrsh7th/nvim-cmp"
-   use "L3MON4D3/LuaSnip"
-   use "saadparwaiz1/cmp_luasnip"
+      'VonHeikemen/lsp-zero.nvim',
+      branch = 'v1.x',
+      requires = {
+         -- LSP Support
+         {'neovim/nvim-lspconfig'},             -- Required
+         {'williamboman/mason.nvim'},           -- Optional
+         {'williamboman/mason-lspconfig.nvim'}, -- Optional
 
-  if packer_bootstrap then
-    require("packer").sync()
-  end
+         -- Autocompletion
+         {'hrsh7th/nvim-cmp'},         -- Required
+         {'hrsh7th/cmp-nvim-lsp'},     -- Required
+         {'hrsh7th/cmp-buffer'},       -- Optional
+         {'hrsh7th/cmp-path'},         -- Optional
+         {'hrsh7th/cmp-cmdline'},      -- Added
+         {'saadparwaiz1/cmp_luasnip'}, -- Optional
+         {'hrsh7th/cmp-nvim-lua'},     -- Optional
+
+         -- Snippets
+         {'L3MON4D3/LuaSnip'},             -- Required
+         {'rafamadriz/friendly-snippets'}, -- Optional
+      }
+   }
+
+
+   if packer_bootstrap then
+      require("packer").sync()
+   end
 end)
